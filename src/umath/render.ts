@@ -14,8 +14,19 @@ function esc(s: string) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }
 
-function fence(c: string) {
-  return `<mo lspace="0" rspace="0">${esc(c)}</mo>`
+// Brackets only grow around tall stuff (fractions, big operators), like in Word.
+// Chrome otherwise picks a wider glyph and the formula looks spaced out.
+function fence(c: string, tall: boolean) {
+  return `<mo lspace="0" rspace="0"${tall ? '' : ' stretchy="false"'}>${esc(c)}</mo>`
+}
+
+function isTall(nodes: Node[]): boolean {
+  return nodes.some((n) =>
+    n.t === 'frac' || n.t === 'nary' ||
+    (n.t === 'group' && isTall(n.body)) ||
+    (n.t === 'script' && isTall([n.base])) ||
+    (n.t === 'sqrt' && isTall(n.body)),
+  )
 }
 
 function row(nodes: Node[]): string {
@@ -43,7 +54,10 @@ function node(n: Node): string {
     case 'ph':
       return `<mi class="ph">⬚</mi>`
     case 'group':
-      return `<mrow>${fence(n.open)}${n.body.map(node).join('')}${n.close ? fence(n.close) : ''}</mrow>`
+      {
+      const tall = isTall(n.body)
+      return `<mrow>${fence(n.open, tall)}${n.body.map(node).join('')}${n.close ? fence(n.close, tall) : ''}</mrow>`
+    }
     case 'frac':
       return `<mfrac${n.atop ? ' linethickness="0"' : ''}>${row(n.num)}${row(n.den)}</mfrac>`
     case 'script': {
