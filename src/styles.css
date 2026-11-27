@@ -1,0 +1,221 @@
+/* Deliberately plain. Looks like a Word document, not a startup.
+   No rounded cards, no gradients, no shadows, no icon packs. */
+
+:root {
+  --bg: #ffffff;
+  --fg: #111111;
+  --muted: #777777;
+  --rule: #cccccc;
+  --link: #0b3fa8;
+  --ok: #157a2b;
+  --ok-bg: #eaf6ec;
+  --bad: #b3261e;
+  --serif: Cambria, 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+  --mathfont: 'Cambria Math', 'STIX Two Math', 'Latin Modern Math', math;
+  --mono: Consolas, 'Lucida Console', Menlo, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161616;
+    --fg: #e8e8e8;
+    --muted: #8a8a8a;
+    --rule: #3a3a3a;
+    --link: #8fb3ff;
+    --ok: #6fd08a;
+    --ok-bg: #18301e;
+    --bad: #ff8a80;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+a { color: var(--link); }
+a.off { color: var(--muted); pointer-events: none; text-decoration: none; }
+.mono { font-family: var(--mono); }
+.hint { color: var(--muted); font-size: 0.85em; }
+.err { color: var(--bad); }
+code, kbd { font-family: var(--mono); font-size: 0.9em; }
+kbd { border: 1px solid var(--rule); padding: 0 4px; }
+
+.wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 28px 20px 40px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- header ---- */
+
+header {
+  border-bottom: 1px solid var(--fg);
+  padding-bottom: 6px;
+  margin-bottom: 22px;
+}
+header h1 {
+  display: inline;
+  font-size: 26px;
+  margin: 0 10px 0 0;
+}
+header h1 a { color: var(--fg); text-decoration: none; }
+.tagline { color: var(--muted); font-style: italic; }
+nav { margin-top: 6px; }
+nav > * { margin-right: 18px; }
+
+main { flex: 1; }
+
+footer {
+  margin-top: 40px;
+  padding-top: 6px;
+  border-top: 1px solid var(--rule);
+  font-size: 14px;
+  color: var(--muted);
+}
+footer a { color: var(--muted); }
+
+/* ---- settings row ---- */
+
+.settings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 26px;
+  font-size: 16px;
+  margin-bottom: 26px;
+}
+.pick-label { color: var(--muted); }
+.slash { color: var(--rule); }
+
+/* ---- the game ---- */
+
+.run-stats {
+  display: flex;
+  gap: 22px;
+  font-size: 15px;
+  color: var(--muted);
+}
+.run-stats span:first-child { color: var(--fg); min-width: 3.5em; }
+.run-stats .low { color: var(--bad) !important; }
+
+.math math { font-family: var(--mathfont); }
+
+.target {
+  margin: 34px 0 4px;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  transition: color 0.12s;
+}
+.target.ok { color: var(--ok); }
+
+.formula-name {
+  text-align: center;
+  color: var(--muted);
+  font-style: italic;
+  font-size: 15px;
+  margin-bottom: 30px;
+}
+
+input.answer {
+  width: 100%;
+  font-size: 21px;
+  padding: 8px 2px;
+  border: none;
+  border-bottom: 2px solid var(--fg);
+  background: transparent;
+  color: var(--fg);
+  outline: none;
+  transition: background 0.12s;
+}
+input.answer.ok { background: var(--ok-bg); border-bottom-color: var(--ok); }
+input.answer::placeholder { color: var(--muted); font-style: italic; }
+
+.preview {
+  min-height: 64px;
+  font-size: 22px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+.math .ph { color: var(--rule); }
+.math .unk { color: var(--bad); font-family: var(--mono); font-size: 0.8em; }
+
+.peek { text-align: center; margin: 6px 0; white-space: pre-wrap; }
+.keys { margin-top: 22px; text-align: center; }
+
+.result { margin-top: 30px; }
+.result .big { font-size: 40px; margin: 0; }
+.newbest { color: var(--ok); font-size: 18px; vertical-align: middle; margin-left: 10px; }
+
+/* ---- other pages ---- */
+
+.page h2 { font-size: 22px; margin: 0 0 8px; }
+.page h3 { font-size: 17px; margin: 22px 0 4px; }
+
+table { border-collapse: collapse; margin: 18px 0; }
+caption { text-align: left; font-weight: bold; padding-bottom: 4px; font-family: var(--serif); }
+td, th { padding: 4px 16px 4px 0; text-align: left; vertical-align: middle; }
+
+table.bests td, table.bests th { border-bottom: 1px solid var(--rule); min-width: 60px; }
+table.bests thead th { color: var(--muted); font-weight: normal; }
+
+table.cheat { width: 100%; }
+table.cheat td { border-bottom: 1px solid var(--rule); }
+table.cheat td.mono { width: 38%; }
+table.cheat td.res { font-size: 20px; width: 28%; }
+table.cheat .math math { display: inline-block; }
+
+/* ---- race ---- */
+
+button {
+  font: inherit;
+  font-size: 16px;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--fg);
+  padding: 3px 12px;
+  cursor: pointer;
+}
+button:hover:not(:disabled) { background: var(--fg); color: var(--bg); }
+button:disabled { color: var(--muted); border-color: var(--rule); cursor: default; }
+
+input.line {
+  font-size: 16px;
+  border: none;
+  border-bottom: 1px solid var(--fg);
+  background: transparent;
+  color: var(--fg);
+  outline: none;
+  padding: 2px;
+}
+input.code { width: 5em; text-align: center; letter-spacing: 3px; margin: 0 6px; }
+.roomcode { font-size: 24px; letter-spacing: 4px; }
+
+table.scores td { padding-right: 20px; }
+table.scores tr.me td { font-weight: bold; }
+.live { margin-top: 20px; border-top: 1px dashed var(--rule); }
+
+.countdown {
+  font-size: 120px;
+  text-align: center;
+  margin-top: 60px;
+}
+
+@media (max-width: 600px) {
+  .target { font-size: 24px; }
+  html, body { font-size: 16px; }
+}
