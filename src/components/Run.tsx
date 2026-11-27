@@ -137,7 +137,7 @@ export function Run({ formulas, duration, startNow, allowRestart = true, onResta
       )}
 
       <div className="keys hint">
-        tab = skip · shift+enter = show answer · esc = {duration ? 'restart' : 'stop'}
+        tab = skip · shift+enter = show answer{allowRestart || !duration ? ` · esc = ${duration ? 'restart' : 'stop'}` : ''}
       </div>
     </div>
   )
